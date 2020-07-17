@@ -1,5 +1,7 @@
 package cn.yuyangyang.weixin.utils;
 
+import cn.yuyangyang.weixin.domain.News;
+import cn.yuyangyang.weixin.domain.NewsMessage;
 import cn.yuyangyang.weixin.domain.TextMessage;
 import com.thoughtworks.xstream.XStream;
 import org.dom4j.Document;
@@ -9,14 +11,16 @@ import org.dom4j.io.SAXReader;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 消息格式转换
  */
 public class MessageUtil {
+
+    // APPID:
+    //
+
 
     // 常量
     public static final String MESSAGE_TEXT = "text";
@@ -79,6 +83,66 @@ public class MessageUtil {
         return xStream.toXML(textMessage);
     }
 
+    /**
+     * 图文消息转为xml
+     */
+    public static String news2XML(NewsMessage newsMessage){
+        XStream xStream = new XStream();
+        // 将根结点的标签替换成xml
+        xStream.alias("xml", newsMessage.getClass());
+        // 消息体使用的是item标签
+        xStream.alias("item", new News().getClass());
+        return xStream.toXML(newsMessage);
+    }
+
+    /**
+     * 拼装图文消息
+     */
+    public static String initNewsMessage(String toUserName, String fromUserName){
+
+        String message = null;
+        ArrayList<News> newsList = new ArrayList<>();
+        NewsMessage newsMessage = new NewsMessage();
+
+        /**
+         * 图文消息个数；当用户发送文本、图片、语音、视频、图文、地理位置这六种消息时，开发者只能回复1条图文消息；其余场景最多可回复8条图文消息
+         * https://mp.weixin.qq.com/cgi-bin/announce?action=getannouncement&announce_id=115383153198yAvN&version=&lang=zh_CN&token=
+         */
+        News news = new News();
+        news.setTitle("blog4yuyangyang");
+        news.setDescription("这是一个博客");
+        news.setPicUrl("http://image.yuyangyang.cn/%E5%A4%87%E6%A1%88%E5%9B%BE%E6%A0%87.png");
+        news.setUrl("http://blog.yuyangyang.cn");
+
+        newsList.add(news);
+
+        newsMessage.setFromUserName(toUserName);
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MessageUtil.MESSAGE_NEWS);
+        newsMessage.setArticleCount(newsList.size());
+        newsMessage.setArticles(newsList);
+
+        message = news2XML(newsMessage);
+        return message;
+    }
+
+
+    /**
+     * 拼接文本消息
+     */
+    public static String initTextMessage(String toUserName, String fromUserName, String content){
+        TextMessage textMessage = new TextMessage();
+        textMessage.setFromUserName(toUserName);
+        textMessage.setToUserName(fromUserName);
+        textMessage.setMsgType(MESSAGE_TEXT);
+        textMessage.setCreateTime(new Date().getTime());
+        textMessage.setContent("消息是：" + content);
+        return MessageUtil.text2XML(textMessage);
+    }
+
+
+
 
     // 菜单
     public static String menuText(){
@@ -87,6 +151,20 @@ public class MessageUtil {
         sb.append("1.女朋友");
         sb.append("2.男朋友");
         sb.append("？调出此菜单");
+        return sb.toString();
+    }
+
+    // 回复 1
+    public static String firstMenu(){
+        StringBuffer sb = new StringBuffer();
+        sb.append("这是关键字1的内容");
+        return sb.toString();
+    }
+
+    // 回复 2
+    public static String secondMenu(){
+        StringBuffer sb = new StringBuffer();
+        sb.append("这是关键字2的内容");
         return sb.toString();
     }
 

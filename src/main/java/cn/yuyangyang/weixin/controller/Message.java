@@ -36,24 +36,26 @@ public class Message {
             String fromUserName = map.get("FromUserName");
             String msgType = map.get("MsgType");
             String content = map.get("Content");
-
             String message = null;
             // 判断是不是文本消息
             if (MessageUtil.MESSAGE_TEXT.equals(msgType)){
-                TextMessage textMessage = new TextMessage();
-                textMessage.setFromUserName(toUserName);
-                textMessage.setToUserName(fromUserName);
-                textMessage.setMsgType("text");
-                textMessage.setCreateTime(new Date().getTime());
-                textMessage.setContent("消息是：" + content);
-                message = MessageUtil.text2XML(textMessage);
+
+                if ("1".equals(content)){
+                    message = MessageUtil.initTextMessage(toUserName, fromUserName, MessageUtil.firstMenu());
+                }else if ("2".equals(content)){
+                    message = MessageUtil.initNewsMessage(toUserName, fromUserName);
+                }else if ("?".equals(content) || "？".equals(content)){
+                    message = MessageUtil.initTextMessage(toUserName, fromUserName, MessageUtil.menuText());
+                }
             }else if (MessageUtil.MESSAGE_EVENT.equals(msgType)){
-                // MsgType 是 Event，判断是关注还是取关了
+                // MsgType 是 Event，判断是关注还是取关
                 String event = map.get("Event");
                 if (event.equals(MessageUtil.MESSAGE_SUBSCRIBE)){
                     // 关注
-                }else {
+                    message = MessageUtil.initTextMessage(toUserName, fromUserName, MessageUtil.menuText());
 
+                }else {
+                    System.out.println(fromUserName + "取关了");
                 }
 
 
