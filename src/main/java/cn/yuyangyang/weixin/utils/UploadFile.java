@@ -19,7 +19,7 @@ import java.net.URL;
  *
  */
 public class UploadFile {
-    private static final String UPLOAD_URL = "https https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
+    private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
 
     public static String upload(String filePath, String accessToken, String type) throws Exception {
         File file = new File(filePath);

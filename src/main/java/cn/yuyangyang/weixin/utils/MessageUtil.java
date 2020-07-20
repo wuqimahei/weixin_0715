@@ -1,8 +1,6 @@
 package cn.yuyangyang.weixin.utils;
 
-import cn.yuyangyang.weixin.domain.News;
-import cn.yuyangyang.weixin.domain.NewsMessage;
-import cn.yuyangyang.weixin.domain.TextMessage;
+import cn.yuyangyang.weixin.domain.*;
 import com.thoughtworks.xstream.XStream;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -17,10 +15,6 @@ import java.util.*;
  * 消息格式转换
  */
 public class MessageUtil {
-
-    // APPID:
-    //
-
 
     // 常量
     public static final String MESSAGE_TEXT = "text";
@@ -166,6 +160,31 @@ public class MessageUtil {
         StringBuffer sb = new StringBuffer();
         sb.append("这是关键字2的内容");
         return sb.toString();
+    }
+
+
+    // 初始化图片消息
+    public static String initImageMessage(String toUserName, String fromUserName){
+        String message = null;
+        Image image = new Image();
+        // C3nbAnnV6VLTZF40xFs1ORKWZBk4ykjwYMgz_Y6szlBnO6Hw6DmfrAWVt0KJZu2l
+        image.setMediaId("HxT4LAK34NXiEH6FoMUdRsNq96wC0venJl7kceHWnA_VkBnkt-54Rm74DeF0MVip");
+        ImageMessage imageMessage = new ImageMessage();
+        imageMessage.setFromUserName(toUserName);
+        imageMessage.setToUserName(fromUserName);
+        imageMessage.setMsgType(MESSAGE_IMAGE);
+        imageMessage.setCreateTime(new Date().getTime());
+        imageMessage.setImage(image);
+        message = image2XML(imageMessage);
+        return message;
+    }
+
+    // 图片消息转xml
+    public static String image2XML(ImageMessage imageMessage){
+        XStream xStream = new XStream();
+        // 将根结点的标签替换成xml
+        xStream.alias("xml", imageMessage.getClass());
+        return xStream.toXML(imageMessage);
     }
 
 

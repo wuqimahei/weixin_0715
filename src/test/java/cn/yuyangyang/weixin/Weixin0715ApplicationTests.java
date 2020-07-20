@@ -17,7 +17,7 @@ class Weixin0715ApplicationTests {
         System.out.println("凭据:" + accessToken.getAccess_token());
         System.out.println("时间："+accessToken.getExpires_in());
 
-        String path = "/Users/yuyangyang/Downloads/2.jpeg";
+        String path = "/Users/yuyangyang/Downloads/1.jpg";
         String mediaId = UploadFile.upload(path, accessToken.getAccess_token(), "image");
         System.out.println(mediaId);
 

@@ -1,6 +1,6 @@
 package cn.yuyangyang.weixin.controller;
 
-import cn.yuyangyang.weixin.domain.TextMessage;
+
 import cn.yuyangyang.weixin.utils.MessageUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -21,7 +20,7 @@ import java.util.Map;
  */
 
 @RestController
-public class Message {
+public class PassiveReply {
 
     @RequestMapping(value = "wx", method = RequestMethod.POST)
     public void textMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,6 +45,8 @@ public class Message {
                     message = MessageUtil.initNewsMessage(toUserName, fromUserName);
                 }else if ("?".equals(content) || "？".equals(content)){
                     message = MessageUtil.initTextMessage(toUserName, fromUserName, MessageUtil.menuText());
+                }else if ("3".equals(content)){
+                    message = MessageUtil.initImageMessage(toUserName, fromUserName);
                 }
             }else if (MessageUtil.MESSAGE_EVENT.equals(msgType)){
                 // MsgType 是 Event，判断是关注还是取关
@@ -57,8 +58,6 @@ public class Message {
                 }else {
                     System.out.println(fromUserName + "取关了");
                 }
-
-
             }
             out.print(message);
 
