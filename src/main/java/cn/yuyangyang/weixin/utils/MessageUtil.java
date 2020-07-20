@@ -188,4 +188,31 @@ public class MessageUtil {
     }
 
 
+    public static String initVideo(String toUserName, String fromUserName){
+
+        Video video = new Video();
+        video.setTitle("标题");
+        video.setMediaId("");
+        video.setDescription("Decription");
+
+
+        String message = null;
+        VideoMessage videoMessage = new VideoMessage();
+        videoMessage.setFromUserName(toUserName);
+        videoMessage.setToUserName(fromUserName);
+        videoMessage.setCreateTime(new Date().getTime());
+        videoMessage.setMsgType(MESSAGE_VIDEO);
+        videoMessage.setVideo(video);
+        return video2XML(videoMessage);
+    }
+
+    public static String video2XML(VideoMessage videoMessage){
+        XStream xStream = new XStream();
+        // 将根结点的标签替换成xml
+        xStream.alias("xml", videoMessage.getClass());
+        return xStream.toXML(videoMessage);
+
+    }
+
+
 }

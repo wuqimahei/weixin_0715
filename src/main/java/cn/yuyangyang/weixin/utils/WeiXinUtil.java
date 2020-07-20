@@ -10,13 +10,17 @@ public class WeiXinUtil {
 //    private static final String APPSECRET = "07b96cf7528cd2de6554ab7a0e6914a6";
 
     // 测试号
-    private static final String APPID = "wx76b2740e7909fbf7";
-    private static final String APPSECRET = "d1bf998fcdbfd9bdd5f7f5764323dc8b";
+//    private static final String APPID = "wx76b2740e7909fbf7";
+//    private static final String APPSECRET = "d1bf998fcdbfd9bdd5f7f5764323dc8b";
+
+    // 主账号测试号
+    private static final String APPID = "wx3c6f40056e18a1df";
+    private static final String APPSECRET = "f0a4a1a94d7b43ad6f96abfbd98f62b0";
 
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 
     /**
-     * Get 获取access_token
+     * Get请求  可以用来获取access_token
      */
     public static JSONObject doGetString(String url){
 

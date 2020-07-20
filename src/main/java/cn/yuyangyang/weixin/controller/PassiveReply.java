@@ -47,6 +47,8 @@ public class PassiveReply {
                     message = MessageUtil.initTextMessage(toUserName, fromUserName, MessageUtil.menuText());
                 }else if ("3".equals(content)){
                     message = MessageUtil.initImageMessage(toUserName, fromUserName);
+                }else if ("4".equals(content)){
+                    message = MessageUtil.initVideo(toUserName, fromUserName);
                 }
             }else if (MessageUtil.MESSAGE_EVENT.equals(msgType)){
                 // MsgType 是 Event，判断是关注还是取关
