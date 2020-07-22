@@ -32,12 +32,16 @@ public class PassiveReply {
             Map<String, String> map = MessageUtil.xml2Map(request);
 
             String toUserName = map.get("ToUserName");
+            System.out.println("toUserName==="+toUserName);
             String fromUserName = map.get("FromUserName");
+            System.out.println("fromUserName==="+fromUserName);
             String msgType = map.get("MsgType");
             String content = map.get("Content");
+
             String message = null;
             // 判断是不是文本消息
             if (MessageUtil.MESSAGE_TEXT.equals(msgType)){
+                System.out.println("msgType:"+msgType);
 
                 if ("1".equals(content)){
                     message = MessageUtil.initTextMessage(toUserName, fromUserName, MessageUtil.firstMenu());
@@ -49,6 +53,8 @@ public class PassiveReply {
                     message = MessageUtil.initImageMessage(toUserName, fromUserName);
                 }else if ("4".equals(content)){
                     message = MessageUtil.initVideo(toUserName, fromUserName);
+                }else if ("5".equals(content)){
+                    message = MessageUtil.initMusic(toUserName, fromUserName);
                 }
             }else if (MessageUtil.MESSAGE_EVENT.equals(msgType)){
                 // MsgType 是 Event，判断是关注还是取关

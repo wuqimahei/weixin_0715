@@ -190,20 +190,22 @@ public class MessageUtil {
 
     public static String initVideo(String toUserName, String fromUserName){
 
-        Video video = new Video();
-        video.setTitle("标题");
-        video.setMediaId("");
-        video.setDescription("Decription");
-
-
         String message = null;
+        Video video = new Video();
+        video.setTitle("视频标题");
+        // Uxx7udVp8BD8NZTEGPnsKnt1aGAoDdnh_9rCiXFct17XmUqegTbbycdjIgtzRM0n
+        video.setMediaId("Uxx7udVp8BD8NZTEGPnsKnt1aGAoDdnh_9rCiXFct17XmUqegTbbycdjIgtzRM0n");
+        video.setDescription("视频描述");
+
         VideoMessage videoMessage = new VideoMessage();
         videoMessage.setFromUserName(toUserName);
         videoMessage.setToUserName(fromUserName);
         videoMessage.setCreateTime(new Date().getTime());
         videoMessage.setMsgType(MESSAGE_VIDEO);
         videoMessage.setVideo(video);
-        return video2XML(videoMessage);
+        message =  video2XML(videoMessage);
+        System.out.println(message);
+        return message;
     }
 
     public static String video2XML(VideoMessage videoMessage){
@@ -211,8 +213,33 @@ public class MessageUtil {
         // 将根结点的标签替换成xml
         xStream.alias("xml", videoMessage.getClass());
         return xStream.toXML(videoMessage);
-
     }
 
+
+
+
+    public static String initMusic(String toUserName, String fromUserName){
+        Music music = new Music();
+        music.setTitle("这是音乐标题");
+        music.setDescription("这是音乐描述");
+        music.setMusicUrl("http://image.yuyangyang.cn/backgroundmusic.mp3");
+        music.setHQMusicUrl("http://image.yuyangyang.cn/backgroundmusic.mp3");
+        music.setThumbMediaId("p0MohHEeFcTObTYIdWJR-nfEYsw2T0idOfnmECDLYchRZhDeBdpTKETSXhORVGeb");
+
+        MusicMessage musicMessage = new MusicMessage();
+        musicMessage.setToUserName(fromUserName);
+        musicMessage.setFromUserName(toUserName);
+        musicMessage.setCreateTime(new Date().getTime());
+        musicMessage.setMsgType(MESSAGE_MUSIC);
+        musicMessage.setMusic(music);
+        return music2XML(musicMessage);
+    }
+
+    public static String music2XML(MusicMessage musicMessage){
+        XStream xStream = new XStream();
+        // 将根结点的标签替换成xml
+        xStream.alias("xml", musicMessage.getClass());
+        return xStream.toXML(musicMessage);
+    }
 
 }

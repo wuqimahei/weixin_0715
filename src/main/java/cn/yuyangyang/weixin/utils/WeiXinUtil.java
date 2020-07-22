@@ -1,6 +1,10 @@
 package cn.yuyangyang.weixin.utils;
 
 import cn.yuyangyang.weixin.domain.AccessToken;
+import cn.yuyangyang.weixin.menu.Button;
+import cn.yuyangyang.weixin.menu.ClickButton;
+import cn.yuyangyang.weixin.menu.Menu;
+import cn.yuyangyang.weixin.menu.ViewButton;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,14 +14,17 @@ public class WeiXinUtil {
 //    private static final String APPSECRET = "07b96cf7528cd2de6554ab7a0e6914a6";
 
     // 测试号
-//    private static final String APPID = "wx76b2740e7909fbf7";
-//    private static final String APPSECRET = "d1bf998fcdbfd9bdd5f7f5764323dc8b";
+    private static final String APPID = "wx76b2740e7909fbf7";
+    private static final String APPSECRET = "d1bf998fcdbfd9bdd5f7f5764323dc8b";
 
     // 主账号测试号
-    private static final String APPID = "wx3c6f40056e18a1df";
-    private static final String APPSECRET = "f0a4a1a94d7b43ad6f96abfbd98f62b0";
+//    private static final String APPID = "wx3c6f40056e18a1df";
+//    private static final String APPSECRET = "f0a4a1a94d7b43ad6f96abfbd98f62b0";
 
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+
+    private static final String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+
 
     /**
      * Get请求  可以用来获取access_token
@@ -65,5 +72,53 @@ public class WeiXinUtil {
         }
         return accessToken;
     }
+
+    public static Menu initMenu(){
+        Menu menu = new Menu();
+
+        ClickButton clickButton1 = new ClickButton();
+        clickButton1.setName("click菜单1");
+        clickButton1.setType("click");
+        clickButton1.setKey("1");
+
+        ClickButton clickButton2 = new ClickButton();
+        clickButton2.setName("扫码");
+        clickButton2.setType("scancode_push");
+        clickButton2.setKey("2");
+
+        ClickButton clickButton3 = new ClickButton();
+        clickButton3.setName("地理位置");
+        clickButton3.setType("location_select");
+        clickButton3.setKey("3");
+
+        ViewButton viewButton = new ViewButton();
+        viewButton.setName("view菜单");
+        viewButton.setType("view");
+        viewButton.setUrl("http://blog.yuyangyang.cn");
+
+        Button button = new Button();
+        button.setName("菜单");
+        // 二级菜单
+        button.setSub_button(new Button[]{clickButton2, clickButton3});
+
+        menu.setButton(new Button[]{clickButton1, viewButton, button});
+        return menu;
+    }
+
+    public static int createMenu(String token, String menu){
+
+        int result = 0;
+        String url = CREATE_MENU_URL.replace("ACCESS_TOKEN", token);
+
+        JSONObject jsonObject = doPostString(url, menu);
+
+        if (jsonObject != null){
+            // 正确时返回 {"errcode":0,"errmsg":"ok"}  通过errcode判断是否成功
+            result = jsonObject.getInteger("errcode");
+        }
+        return result;
+    }
+
+
 
 }

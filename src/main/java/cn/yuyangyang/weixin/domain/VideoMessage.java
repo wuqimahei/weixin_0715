@@ -1,13 +1,13 @@
 package cn.yuyangyang.weixin.domain;
 
 public class VideoMessage extends BaseMessage {
-    private  Video video;
+    private  Video Video;
 
-    public Video getVideo() {
-        return video;
+    public cn.yuyangyang.weixin.domain.Video getVideo() {
+        return Video;
     }
 
-    public void setVideo(Video video) {
-        this.video = video;
+    public void setVideo(cn.yuyangyang.weixin.domain.Video video) {
+        Video = video;
     }
 }
